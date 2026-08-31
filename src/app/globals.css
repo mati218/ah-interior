@@ -1,26 +1,75 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-cream: #f7f3ec;
+  --color-cream-dark: #efe7d8;
+  --color-white: #ffffff;
+  --color-ivory: #fbf9f5;
+  --color-charcoal: #2b2622;
+  --color-taupe: #8a7b6c;
+  --color-gold: #b8925a;
+  --color-gold-dark: #9c7a48;
+  --color-sage: #a8ad96;
+  --color-border: #e5ded2;
+  --color-success: #6b8f71;
+  --color-error: #b5544a;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-cream: var(--color-cream);
+  --color-cream-dark: var(--color-cream-dark);
+  --color-white: var(--color-white);
+  --color-ivory: var(--color-ivory);
+  --color-charcoal: var(--color-charcoal);
+  --color-taupe: var(--color-taupe);
+  --color-gold: var(--color-gold);
+  --color-gold-dark: var(--color-gold-dark);
+  --color-sage: var(--color-sage);
+  --color-border: var(--color-border);
+  --color-success: var(--color-success);
+  --color-error: var(--color-error);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --font-display: var(--font-playfair);
+  --font-sans: var(--font-inter);
+
+  --animate-fade-up: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-cream);
+  color: var(--color-charcoal);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-white);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Thin, elegant scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-taupe);
+  border-radius: 999px;
 }
