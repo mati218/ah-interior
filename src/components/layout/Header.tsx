@@ -8,9 +8,9 @@ import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
-  { href: "/about", label: "About" },
-  { href: "/services", label: "Services" },
   { href: "/projects", label: "Projects" },
+  { href: "/about", label: "Studio" },
+  { href: "/services", label: "Services" },
   { href: "/blog", label: "Journal" },
   { href: "/contact", label: "Contact" },
 ];
@@ -21,7 +21,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => setScrolled(window.scrollY > 50);
     onScroll();
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
@@ -31,37 +31,46 @@ export function Header() {
     setOpen(false);
   }, [pathname]);
 
-  const solid = scrolled || open;
+  const isTransparent = !scrolled && !open;
 
   return (
-    <header
+    <motion.header
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 1, delay: 4.5, ease: [0.65, 0, 0.35, 1] }}
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-500",
-        solid
-          ? "bg-cream/95 backdrop-blur-md shadow-[0_1px_0_0_var(--color-border)]"
-          : "bg-gradient-to-b from-charcoal/50 to-transparent"
+        "fixed inset-x-0 top-0 z-50 transition-all duration-700",
+        isTransparent
+          ? "bg-transparent"
+          : "border-b border-border/30 bg-ivory/98 backdrop-blur-xl"
       )}
     >
-      <div className="mx-auto flex h-20 max-w-[1440px] items-center justify-between px-6 lg:px-12">
+      <div className="mx-auto flex h-20 max-w-[1800px] items-center justify-between px-8 lg:h-24 lg:px-16">
+        {/* Logo */}
         <Link
           href="/"
           className={cn(
-            "font-display text-2xl tracking-wide transition-colors",
-            solid ? "text-charcoal" : "text-cream"
+            "font-display text-xl tracking-tight transition-all duration-700 lg:text-2xl",
+            isTransparent ? "text-cream" : "text-charcoal"
           )}
+          data-cursor-text="HOME"
         >
-          A&amp;H <span className="text-gold">Interiors</span>
+          A&H
         </Link>
 
-        <nav className="hidden items-center gap-10 lg:flex">
+        {/* Desktop Navigation */}
+        <nav className="hidden items-center gap-12 lg:flex">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
+              data-cursor-text="VIEW"
               className={cn(
-                "text-sm uppercase tracking-wider transition-colors hover:text-gold",
-                solid ? "text-charcoal/80" : "text-cream/90",
-                pathname === link.href && "text-gold"
+                "relative text-[11px] uppercase tracking-[0.2em] transition-all duration-500",
+                isTransparent ? "text-beige" : "text-charcoal/80",
+                pathname === link.href && (isTransparent ? "text-ivory" : "text-black"),
+                "after:absolute after:bottom-[-2px] after:left-0 after:h-px after:w-0 after:bg-gold after:transition-all after:duration-500 hover:after:w-full",
+                pathname === link.href && "after:w-full"
               )}
             >
               {link.label}
@@ -69,56 +78,64 @@ export function Header() {
           ))}
         </nav>
 
-        <Link
-          href="/contact"
-          className={cn(
-            "hidden border px-6 py-2.5 text-xs uppercase tracking-wider transition-colors lg:inline-flex",
-            solid
-              ? "border-charcoal text-charcoal hover:bg-charcoal hover:text-cream"
-              : "border-cream text-cream hover:bg-cream hover:text-charcoal"
-          )}
-        >
-          Book a Consultation
-        </Link>
-
+        {/* Mobile Menu Button */}
         <button
           aria-label="Toggle menu"
           onClick={() => setOpen((v) => !v)}
-          className={cn("lg:hidden transition-colors", solid ? "text-charcoal" : "text-cream")}
+          className={cn(
+            "flex flex-col items-end gap-1.5 lg:hidden",
+            isTransparent ? "text-cream" : "text-charcoal"
+          )}
+          data-cursor-text="MENU"
         >
-          {open ? <X size={26} /> : <Menu size={26} />}
+          <motion.span
+            animate={{ rotate: open ? 45 : 0, y: open ? 7 : 0 }}
+            className="h-px w-7 origin-right bg-current transition-all"
+          />
+          <motion.span
+            animate={{ opacity: open ? 0 : 1 }}
+            className="h-px w-5 bg-current"
+          />
+          <motion.span
+            animate={{ rotate: open ? -45 : 0, y: open ? -7 : 0 }}
+            className="h-px w-7 origin-right bg-current transition-all"
+          />
         </button>
       </div>
 
+      {/* Mobile Menu */}
       <AnimatePresence>
         {open && (
           <motion.nav
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="overflow-hidden bg-cream lg:hidden"
+            transition={{ duration: 0.5, ease: [0.65, 0, 0.35, 1] }}
+            className="overflow-hidden border-t border-border/30 bg-ivory lg:hidden"
           >
-            <div className="flex flex-col gap-6 px-6 pb-8 pt-2">
-              {NAV_LINKS.map((link) => (
-                <Link
+            <div className="flex flex-col gap-8 px-8 py-12">
+              {NAV_LINKS.map((link, i) => (
+                <motion.div
                   key={link.href}
-                  href={link.href}
-                  className="text-lg uppercase tracking-wider text-charcoal"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.1, duration: 0.5 }}
                 >
-                  {link.label}
-                </Link>
+                  <Link
+                    href={link.href}
+                    className={cn(
+                      "font-display text-3xl font-light tracking-tight transition-colors duration-300",
+                      pathname === link.href ? "text-gold" : "text-charcoal/70 hover:text-black"
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                </motion.div>
               ))}
-              <Link
-                href="/contact"
-                className="mt-2 inline-flex w-fit border border-charcoal px-6 py-2.5 text-xs uppercase tracking-wider text-charcoal"
-              >
-                Book a Consultation
-              </Link>
             </div>
           </motion.nav>
         )}
       </AnimatePresence>
-    </header>
+    </motion.header>
   );
 }

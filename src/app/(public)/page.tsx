@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
-import { HeroSection } from "@/components/sections/HeroSection";
-import { FeaturedProjects } from "@/components/sections/FeaturedProjects";
-import { ServicesGrid } from "@/components/sections/ServicesGrid";
+import { LusionHero } from "@/components/sections/LusionHero";
+import { LusionPortfolio } from "@/components/sections/LusionPortfolio";
+import { AwwwardsServices } from "@/components/sections/AwwwardsServices";
 import { StatsBand } from "@/components/sections/StatsBand";
 import { TestimonialSlider } from "@/components/sections/TestimonialSlider";
 import { CTABanner } from "@/components/sections/CTABanner";
@@ -24,13 +24,13 @@ export default async function HomePage() {
 
   const heroImage =
     featuredProjects[0]?.coverImage ??
-    "https://images.unsplash.com/photo-1724582586529-62622e50c0b3?auto=format&fit=crop&w=2000&q=80";
+    "https://images.unsplash.com/photo-1600210492493-0946911123ea?auto=format&fit=crop&w=2400&q=90";
 
   return (
     <>
-      <HeroSection image={heroImage} />
-      <FeaturedProjects projects={featuredProjects} />
-      <ServicesGrid services={services} />
+      <LusionHero image={heroImage} />
+      <LusionPortfolio projects={featuredProjects} />
+      <AwwwardsServices services={services} />
       <StatsBand />
       <TestimonialSlider testimonials={testimonials} />
       <CTABanner />

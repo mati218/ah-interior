@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { PageHeader } from "@/components/sections/PageHeader";
-import { ProjectsFilterGrid } from "@/components/project/ProjectsFilterGrid";
+import { LusionProjectsGrid } from "@/components/project/LusionProjectsGrid";
 import { CTABanner } from "@/components/sections/CTABanner";
 
 export const metadata: Metadata = {
@@ -28,8 +28,10 @@ export default async function ProjectsPage() {
         image="https://images.unsplash.com/photo-1616137422495-1e9e46e2aa77?auto=format&fit=crop&w=2000&q=80"
       />
 
-      <section className="mx-auto max-w-[1440px] px-6 py-24 lg:px-12 lg:py-32">
-        <ProjectsFilterGrid projects={projects} categories={categories} />
+      <section className="bg-black">
+        <div className="mx-auto max-w-[1800px] px-8 py-24 lg:px-12 lg:py-32">
+          <LusionProjectsGrid projects={projects} categories={categories} />
+        </div>
       </section>
 
       <CTABanner />

@@ -6,19 +6,20 @@ type Variant = "primary" | "outline" | "ghost";
 type Size = "sm" | "md" | "lg";
 
 const base =
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-sans text-sm tracking-wide uppercase transition-colors duration-300 disabled:opacity-50 disabled:pointer-events-none";
+  "group relative inline-flex items-center justify-center gap-4 whitespace-nowrap font-sans text-[9px] font-light uppercase tracking-[0.3em] overflow-hidden transition-all duration-1000 disabled:opacity-50 disabled:pointer-events-none";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-charcoal text-cream hover:bg-gold hover:text-white",
+  primary:
+    "bg-obsidian text-ivory hover:bg-charcoal border border-obsidian hover:border-gold-subtle",
   outline:
-    "border border-charcoal text-charcoal hover:bg-charcoal hover:text-cream",
+    "border border-gold-subtle/30 text-champagne hover:border-gold hover:text-ivory bg-transparent backdrop-blur-sm",
   ghost: "text-charcoal hover:text-gold",
 };
 
 const sizes: Record<Size, string> = {
-  sm: "h-9 px-4 text-xs",
-  md: "h-11 px-6",
-  lg: "h-14 px-8 text-base",
+  sm: "h-12 px-7 text-[8px]",
+  md: "h-14 px-9 text-[9px]",
+  lg: "h-16 px-11 text-[10px]",
 };
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -38,7 +39,10 @@ export function Button({
       className={cn(base, variants[variant], sizes[size], className)}
       {...props}
     >
-      {children}
+      <span className="relative z-10 transition-transform duration-1000 group-hover:translate-x-1">
+        {children}
+      </span>
+      <span className="relative z-10 h-px w-5 bg-current opacity-50 transition-all duration-1000 group-hover:w-10 group-hover:opacity-100" />
     </button>
   );
 }
@@ -57,13 +61,18 @@ export function ButtonLink({
   size = "md",
   className,
   children,
+  ...props
 }: ButtonLinkProps) {
   return (
     <Link
       href={href}
       className={cn(base, variants[variant], sizes[size], className)}
+      {...props}
     >
-      {children}
+      <span className="relative z-10 transition-transform duration-1000 group-hover:translate-x-1">
+        {children}
+      </span>
+      <span className="relative z-10 h-px w-5 bg-current opacity-50 transition-all duration-1000 group-hover:w-10 group-hover:opacity-100" />
     </Link>
   );
 }
